@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #include "board.h"
+#include "unit.h"
 
 void print_board(const board b)
 {
@@ -90,4 +91,27 @@ int main()
 {
     test_shifts();
     test_clear_rows();
+
+    int xs [] = { 4 };
+    int ys [] = { 2 };
+
+    unit u;
+    u.pivot_x = 2;
+    u.pivot_y = 3;
+    u.num_cells = 1;
+    u.cells_x = xs;
+    u.cells_y = ys;
+
+    rotate_unit(&u, 0);
+    printf("%d, %d\n", u.cells_x[0], u.cells_y[0]);
+    rotate_unit(&u, 0);
+    printf("%d, %d\n", u.cells_x[0], u.cells_y[0]);
+    rotate_unit(&u, 0);
+    printf("%d, %d\n", u.cells_x[0], u.cells_y[0]);
+    rotate_unit(&u, 0);
+    printf("%d, %d\n", u.cells_x[0], u.cells_y[0]);
+    rotate_unit(&u, 0);
+    printf("%d, %d\n", u.cells_x[0], u.cells_y[0]);
+    rotate_unit(&u, 0);
+    printf("%d, %d\n", u.cells_x[0], u.cells_y[0]);
 }

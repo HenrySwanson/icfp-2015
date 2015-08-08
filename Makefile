@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -Wall -g --std=c99
 LFLAGS = -g
 
-SRCS = board.c
+SRCS = board.c unit.c
 OBJS = $(patsubst %.c, %.o, $(SRCS))
 
 .PHONY : all clean test
