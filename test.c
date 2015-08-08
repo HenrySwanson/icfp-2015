@@ -4,18 +4,18 @@
 #include "board.h"
 #include "unit.h"
 
-void print_board(const board b)
+void print_board(board* b)
 {
-    for(int i = 0; i < b.width; i++)
+    for(int i = 0; i < b->width; i++)
         printf(" ___");
     printf("\n");
 
-    for(int j = 0; j < b.height; j++)
+    for(int j = 0; j < b->height; j++)
     {
         if(j & 1)
             printf("  ");
 
-        for(int i = 0; i < b.width; i++)
+        for(int i = 0; i < b->width; i++)
         {
             if(get_cell(b, i, j))
                 printf("|XXX");
@@ -27,10 +27,10 @@ void print_board(const board b)
         if(j & 1)
             printf(" _");
 
-        for(int i = 0; i < b.width; i++)
+        for(int i = 0; i < b->width; i++)
             printf("|___");
 
-        if(j & 1 || j + 1 == b.height)
+        if(j & 1 || j + 1 == b->height)
             printf("|\n");
         else
             printf("|_\n");
@@ -63,8 +63,7 @@ void test_shifts()
 
 void test_clear_rows()
 {
-    board b;
-    alloc_board(&b, 3, 5);
+    board* b = new_board(3, 5);
 
     int start [3][5] = {{1, 0, 1, 0, 0},
                         {1, 1, 1, 0, 0},
@@ -72,9 +71,9 @@ void test_clear_rows()
 
     for(int i = 0; i < 3; i++)
         for(int j = 0; j < 5; j++)
-            set_cell(&b, i, j, start[i][j]);
+            set_cell(b, i, j, start[i][j]);
 
-    clear_rows(&b);
+    clear_rows(b);
 
     int end [3][5] = {{0, 0, 0, 0, 0},
                       {1, 0, 0, 0, 0},

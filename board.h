@@ -13,17 +13,20 @@ typedef struct {
 /** An enum for directions we are allowed to move in. */
 typedef enum {EAST, WEST, SOUTHEAST, SOUTHWEST} dir_t;
 
-/** Allocates memory for a board. */
-void alloc_board(board* b, int width, int height);
+/** Creates a new board. */
+board* new_board(int width, int height);
 
-/** Frees the memory for a board. */
-void free_board(const board b);
+/** Destroys a board. */
+void free_board(board* b);
+
+/** Copies a board. */
+board* copy_board(board* b);
 
 /** Returns 1 if this cell is on the board, 0 otherwise. */
-int is_valid_cell(const board b, int x, int y);
+int is_valid_cell(board* b, int x, int y);
 
 /** Returns FULL or EMPTY. */
-int get_cell(const board b, int x, int y);
+int get_cell(board* b, int x, int y);
 
 /** Changes a cell to FULL or EMPTY. */
 void set_cell(board* b, int x, int y, int val);

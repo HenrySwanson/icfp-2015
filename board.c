@@ -23,32 +23,43 @@ void shift_cell(int* x, int* y, dir_t dir)
     }
 }
 
-void alloc_board(board* b, int width, int height)
+board* new_board(int width, int height)
 {
+    board* b = malloc(sizeof(board));
     b->width = width;
     b->height = height;
     b->cells = malloc(sizeof(int) * width * height);
+    return b;
 }
 
-void free_board(const board b)
+void free_board(board* b)
 {
-    free(b.cells);
+    free(b->cells);
+    free(b);
 }
 
-int is_valid_cell(const board b, int x, int y)
+board* copy_board(board* b)
 {
-    return (0 <= x && x < b.width) && (0 <= y && y < b.height);
+    board* copy = new_board(b->width, b->height);
+    for(int i = 0; i < b->width * b->height; i++)
+        copy->cells[i] = b->cells[i];
+    return copy;
 }
 
-int get_cell(const board b, int x, int y)
+int is_valid_cell(board* b, int x, int y)
+{
+    return (0 <= x && x < b->width) && (0 <= y && y < b->height);
+}
+
+int get_cell(board* b, int x, int y)
 {
     assert(is_valid_cell(b, x, y));
-    return b.cells[x + b.width * y];
+    return b->cells[x + b->width * y];
 }
 
 void set_cell(board* b, int x, int y, int val)
 {
-    assert(is_valid_cell(*b, x, y));
+    assert(is_valid_cell(b, x, y));
     b->cells[x + b->width * y] = val;
 }
 
@@ -60,7 +71,7 @@ int clear_rows(board* b)
     {
         int is_full = 1;
         for(int i = 0; i < b->width; i++)
-            is_full &= get_cell(*b, i, j);
+            is_full &= get_cell(b, i, j);
 
         // If we have a full row, clear it
         if(is_full)
@@ -68,7 +79,7 @@ int clear_rows(board* b)
         // Else, move this row down
         else if(num_rows != 0)
             for(int i = 0; i < b->width; i++)
-                set_cell(b, i, j - num_rows, get_cell(*b, i, j));
+                set_cell(b, i, j - num_rows, get_cell(b, i, j));
         // If neither, look at the next row
         else
             continue;
