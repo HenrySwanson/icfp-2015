@@ -87,31 +87,33 @@ void test_clear_rows()
     free_board(b);
 }
 
+void test_rotation()
+{
+    // We'll rotate some cells around 2, 3
+    int xs [] = { 3, 4, 5 };
+    int ys [] = { 3, 2, 4 };
+    int new_xs [] = { 3, 2, 4 };
+    int new_ys [] = { 2, 1, 1 };
+
+    unit u;
+    u.pivot_x = 2;
+    u.pivot_y = 3;
+    u.num_cells = 3;
+    u.cells_x = xs;
+    u.cells_y = ys;
+
+    rotate_unit(&u, 0);
+    for(int i = 0; i < u.num_cells; i++)
+    {
+        assert(u.cells_x[i] == new_xs[i]);
+        assert(u.cells_y[i] == new_ys[i]);
+    }
+}
+
 int main()
 {
     test_shifts();
     test_clear_rows();
 
-    int xs [] = { 4 };
-    int ys [] = { 2 };
-
-    unit u;
-    u.pivot_x = 2;
-    u.pivot_y = 3;
-    u.num_cells = 1;
-    u.cells_x = xs;
-    u.cells_y = ys;
-
-    rotate_unit(&u, 0);
-    printf("%d, %d\n", u.cells_x[0], u.cells_y[0]);
-    rotate_unit(&u, 0);
-    printf("%d, %d\n", u.cells_x[0], u.cells_y[0]);
-    rotate_unit(&u, 0);
-    printf("%d, %d\n", u.cells_x[0], u.cells_y[0]);
-    rotate_unit(&u, 0);
-    printf("%d, %d\n", u.cells_x[0], u.cells_y[0]);
-    rotate_unit(&u, 0);
-    printf("%d, %d\n", u.cells_x[0], u.cells_y[0]);
-    rotate_unit(&u, 0);
-    printf("%d, %d\n", u.cells_x[0], u.cells_y[0]);
+    printf("All tests passed!\n");
 }
