@@ -1,6 +1,7 @@
 #include "unit.h"
 
 #include <assert.h>
+#include <stdlib.h>
 
 // Rotating is complicated. We'll use a three-axis coordinate system.
 // Constant a is \, constant b is /, and constant c is --.
@@ -52,6 +53,35 @@ void rotate_unit(unit* u, int ccw)
      }
 }
 
+unit* new_unit(int num_cells)
+{
+    unit* u = malloc(sizeof(unit));
+    u->num_cells = num_cells;
+    u->cells_x = malloc(sizeof(int) * num_cells);
+    u->cells_y = malloc(sizeof(int) * num_cells);
+    return u;
+}
+
+void free_unit(unit* u)
+{
+    free(u->cells_x);
+    free(u->cells_y);
+    free(u);
+}
+
+unit* copy_unit(unit* u)
+{
+    unit* v = new_unit(u->num_cells);
+    v->pivot_x = u->pivot_x;
+    v->pivot_y = u->pivot_y;
+    for(int i = 0; i < u->num_cells; i++)
+    {
+        v->cells_x[i] = u->cells_x[i];
+        v->cells_y[i] = u->cells_y[i];
+    }
+    return v;
+}
+
 void move_unit(unit* u, dir_t dir)
 {
     if(dir == CCWISE)
@@ -90,8 +120,6 @@ void place(unit* u, board* b)
     }
 }
 
-
-// TODO you should probably test this???
 void spawn_unit(unit* u, board* b)
 {
     assert(u->num_cells > 0);
@@ -133,4 +161,5 @@ void spawn_unit(unit* u, board* b)
 
     for(int i = 1; i < u->num_cells; i++)
         u->cells_x[i] += shift_dist;
+    u->pivot_x += shift_dist;
 }

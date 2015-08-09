@@ -9,6 +9,15 @@ typedef struct {
     int *cells_x, *cells_y;
 } unit;
 
+/** Creates a new unit. */
+unit* new_unit(int num_cells);
+
+/** Destroys a unit. */
+void free_unit(unit* u);
+
+/** Copies a unit. */
+unit* copy_unit(unit* u);
+
 /** Destructively shifts the unit in the given direction. */
 void move_unit(unit* u, dir_t dir);
 

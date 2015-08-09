@@ -8,16 +8,24 @@ int score_seq(board* b, unit* units, int num_units, dir_t* moves, int num_moves)
     for(int i = 0; i < num_moves; i++)
     {
         unit* u = units + active_unit;
+
+        // At the beginning of the loop, we should always be in a valid place
+        assert(can_be_placed(u, b));
+
+        // Move, possibly to an invalid place
         move_unit(u, moves[i]);
 
         // Did we lock our piece?
         if(!can_be_placed(u, b))
         {
+            // Undo, then place onto the board
             move_unit(u, opposite_dir(moves[i]));
             place(u, b);
 
             // TODO row scoring
+            int rows_cleared = clear_rows(b);
 
+            // Move to the next piece
             active_unit++;
             if(active_unit == num_units)
                 // That should have been our final move

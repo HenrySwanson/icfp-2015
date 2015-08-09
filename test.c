@@ -152,7 +152,46 @@ void test_rotation()
     }
 }
 
-// TODO test spawning, because it's probably wrong
+void test_spawning_helper(unit* u, board* b)
+{
+    int x_offsets [6] = { 0, 4, 5, -1, -3, 9 };
+    int y_offsets [6] = { 0, 2, -3, 5, -10, 2 };
+
+    unit* clone = copy_unit(u);
+
+    for(int i = 0; i < 6; i++)
+    {
+        for(int j = 0; j < u->num_cells; j++)
+        {
+            clone->cells_x[j] += x_offsets[i];
+            clone->cells_y[j] += y_offsets[i];
+        }
+
+        spawn_unit(clone, b);
+
+        for(int j = 0; j < u->num_cells; j++)
+        {
+            assert(u->cells_x[j] == clone->cells_x[j]);
+            assert(u->cells_y[j] == clone->cells_y[j]);
+        }
+        assert(u->pivot_x = clone->pivot_x);
+        assert(u->pivot_y = clone->pivot_y);
+    }
+}
+
+void test_spawning()
+{
+    board* b = new_board(5, 5);
+
+    unit* u = new_unit(1);
+    u->cells_x[0] = 2;
+    u->cells_y[0] = 0;
+
+    test_spawning_helper(u, b);
+
+    free_unit(u);
+    free_board(b);
+}
 
 int main()
 {
