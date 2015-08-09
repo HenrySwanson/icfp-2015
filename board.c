@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 void shift_cell(int* x, int* y, dir_t dir)
 {
@@ -72,27 +73,39 @@ void set_cell(board* b, int x, int y, int val)
 int clear_rows(board* b)
 {
     int num_rows = 0;
-
-    for(int j = 0; j < b->height; j++)
+    // Iterate from bottom to top because of the indexing.
+    for (int j = b->height - 1; j >= 0; j--)
     {
+        // Check whether this row is full.
         int is_full = 1;
-        for(int i = 0; i < b->width; i++)
+        for (int i = 0; i < b->width; i++)
+        {
             is_full &= get_cell(b, i, j);
-
-        // If we have a full row, clear it
-        if(is_full)
+        }
+        // If it is full, keep track of that.
+        if (is_full)
+        {
             num_rows++;
-        // Else, move this row down
-        else if(num_rows != 0)
-            for(int i = 0; i < b->width; i++)
-                set_cell(b, i, j - num_rows, get_cell(b, i, j));
-        // If neither, look at the next row
+        }
+        // If it's not, but if there were full rows below it...
+        else if (num_rows != 0)
+        {
+            for (int i = 0; i < b->width; i++)
+            {
+                // Move it down.
+                set_cell(b, i, j + num_rows, get_cell(b, i, j));
+            }
+        }
+        // If neither, just move on.
         else
+        {
             continue;
-
-        // If we didn't hit the else, clear the row
-        for(int i = 0; i < b->width; i++)
+        }
+        // If we missed the else statement, then we have to clear the row.
+        for (int i = 0; i < b->width; i++)
+        {
             set_cell(b, i, j, 0);
+        }
     }
 
     return num_rows;

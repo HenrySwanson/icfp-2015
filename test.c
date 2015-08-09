@@ -4,6 +4,27 @@
 #include "board.h"
 #include "unit.h"
 
+#define VERBOSE 0 // change to 1 for detailed output
+
+void ugly_print_board(board* b)
+{
+    for (int j = 0; j < b->height; j++)
+    {
+        for (int i = 0; i < b->width; i++)
+        {
+            if (get_cell(b, i, j))
+            {
+                printf("1");
+            }
+            else
+            {
+                printf("0");
+            }
+        }
+        printf("\n");
+    }
+}
+
 void print_board(board* b)
 {
     for(int i = 0; i < b->width; i++)
@@ -84,12 +105,22 @@ void test_clear_rows()
     for(int i = 0; i < 3; i++)
         for(int j = 0; j < 5; j++)
             set_cell(b, i, j, start[i][j]);
+#if VERBOSE
+    printf("This is the initial board state:\n", stdout);
+    print_board(b);
+    printf("\n\n\n", stdout);
+#endif
 
     clear_rows(b);
 
+#if VERBOSE
+    printf("This is what happened when full rows were cleared:\n", stdout);
+    print_board(b);
+#endif
+
     int end [3][5] = {{0, 0, 0, 0, 0},
-                      {1, 0, 0, 0, 0},
-                      {1, 0, 1, 0, 0}};
+                      {0, 0, 1, 0, 0},
+                      {0, 0, 1, 0, 1}};
 
     for(int i = 0; i < 3; i++)
         for(int j = 0; j < 5; j++)
