@@ -94,7 +94,7 @@ int main(int argc, char* argv[]) {
                 if (num_files > 1) {
                     filenames = realloc(filenames, sizeof(char *) * num_files);
                 }
-                filenames[num_files] = optarg;
+                filenames[num_files - 1] = optarg;
                 break;
             case 't':
                 if (time_available != 0) {
@@ -122,7 +122,7 @@ int main(int argc, char* argv[]) {
                 if (num_wops > 1) {
                     wops = realloc(wops, sizeof(char *) * num_wops);
                 }
-                wops[num_wops] = optarg;
+                wops[num_wops - 1] = optarg;
                 break;
             case '?':
                 fprintf(stderr, "Incorrect usage! See icfp spec for correct usage\n");
