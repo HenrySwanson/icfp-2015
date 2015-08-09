@@ -7,7 +7,7 @@ OBJS = $(patsubst %.c, %.o, $(SRCS))
 
 .PHONY : all clean test
 
-all : icfp 
+all : icfp
 
 clean :
 	rm -rf *.o icfp test

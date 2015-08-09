@@ -89,7 +89,7 @@ int clear_rows(board* b)
         // If neither, look at the next row
         else
             continue;
-        
+
         // If we didn't hit the else, clear the row
         for(int i = 0; i < b->width; i++)
             set_cell(b, i, j, 0);
