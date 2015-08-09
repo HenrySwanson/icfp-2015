@@ -18,4 +18,8 @@ typedef struct {
     int seed;
     char* tag;
     dir_t* solution;
+} result;
+
+typedef struct {
+    result* output;
 } output;
