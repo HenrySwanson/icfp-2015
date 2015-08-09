@@ -7,16 +7,16 @@ OBJS = $(patsubst %.c, %.o, $(SRCS))
 
 .PHONY : all clean test
 
-all : icfp
+all : playicfp_2015
 
 clean :
-	rm -rf *.o icfp test
+	rm -rf *.o playicfp_2015 test
 
 test : $(OBJS) test.o
 	$(CC) $(LFLAGS) $^ -o $@
 	./test
 
-icfp : $(OBJS) icfp.o
+playicfp_2015 : $(OBJS) playicfp_2015.o
 	$(CC) $(LFLAGS) $^ -o $@
 
 %.o : %.cpp
