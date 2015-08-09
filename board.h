@@ -11,7 +11,14 @@ typedef struct {
 } board;
 
 /** An enum for directions we are allowed to move in. */
-typedef enum {EAST, WEST, SOUTHEAST, SOUTHWEST, CWISE, CCWISE} dir_t;
+typedef enum {EAST, WEST, SOUTHEAST, SOUTHWEST, NORTHWEST, NORTHEAST,
+    CWISE, CCWISE} dir_t;
+
+/** Reverses the given direction. */
+inline dir_t opposite_dir(dir_t d)
+{
+    return d ^ 1;
+}
 
 /** Creates a new board. */
 board* new_board(int width, int height);

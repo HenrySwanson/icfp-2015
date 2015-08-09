@@ -59,6 +59,18 @@ void test_shifts()
 
     shift_cell(&x, &y, SOUTHWEST);
     assert(x == 2 && y == 5);
+
+    shift_cell(&x, &y, NORTHWEST);
+    assert(x == 2 && y == 4);
+
+    shift_cell(&x, &y, NORTHWEST);
+    assert(x == 1 && y == 3);
+
+    shift_cell(&x, &y, NORTHEAST);
+    assert(x == 2 && y == 2);
+
+    shift_cell(&x, &y, NORTHEAST);
+    assert(x == 2 && y == 1);
 }
 
 void test_clear_rows()
@@ -108,6 +120,8 @@ void test_rotation()
         assert(u.cells_y[i] == new_ys[i]);
     }
 }
+
+// TODO test spawning, because it's probably wrong
 
 int main()
 {

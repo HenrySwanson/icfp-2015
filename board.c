@@ -18,6 +18,12 @@ void shift_cell(int* x, int* y, dir_t dir)
         *x += (*y & 1);
         *y += 1;
         return;
+      case NORTHWEST:
+        *x -= 1; // NW is the same as W then NE
+      case NORTHEAST:
+        *x += (*y & 1);
+        *y -= 1;
+        return;
       default:
         assert(0);
     }

@@ -2,23 +2,6 @@
 
 #include <assert.h>
 
-/** Destructively rotates the unit in the given direction. */
-void rotate_unit(unit* u, int ccw);
-
-void move_unit(unit* u, dir_t dir)
-{
-    if(dir == CCWISE)
-        rotate_unit(u, 1);
-    else if(dir == CWISE)
-        rotate_unit(u, 0);
-    else
-    {
-        shift_cell(&u->pivot_x, &u->pivot_y, dir);
-        for(int i = 0; i < u->num_cells; i++)
-            shift_cell(&u->cells_x[i], &u->cells_y[i], dir);
-    }
-}
-
 // Rotating is complicated. We'll use a three-axis coordinate system.
 // Constant a is \, constant b is /, and constant c is --.
 // Positive is always up and to the right.
@@ -37,6 +20,7 @@ void from_triple(int a, int b, int c, int* x, int* y)
     *y = c;
 }
 
+/** Destructively rotates the unit in the given direction. */
 void rotate_unit(unit* u, int ccw)
 {
      int pivot_a, pivot_b, pivot_c;
@@ -68,6 +52,20 @@ void rotate_unit(unit* u, int ccw)
      }
 }
 
+void move_unit(unit* u, dir_t dir)
+{
+    if(dir == CCWISE)
+        rotate_unit(u, 1);
+    else if(dir == CWISE)
+        rotate_unit(u, 0);
+    else
+    {
+        shift_cell(&u->pivot_x, &u->pivot_y, dir);
+        for(int i = 0; i < u->num_cells; i++)
+            shift_cell(&u->cells_x[i], &u->cells_y[i], dir);
+    }
+}
+
 int can_be_placed(unit* u, board* b)
 {
     for(int i = 0; i < u->num_cells; i++)
@@ -90,4 +88,49 @@ void place(unit* u, board* b)
         int yi = u->cells_y[i];
         set_cell(b, xi, yi, 1);
     }
+}
+
+
+// TODO you should probably test this???
+void spawn_unit(unit* u, board* b)
+{
+    assert(u->num_cells > 0);
+
+    // Find the y-coordinate of the topmost cell and the x-coordinates of the
+    // outermost cells.
+    int top, left, right;
+    top = u->cells_y[0];
+    left = right = u->cells_x[0];
+
+    for(int i = 1; i < u->num_cells; i++)
+    {
+       int xi = u->cells_x[i];
+       int yi = u->cells_y[i];
+       if(yi < top)
+           top = yi;
+       if(xi < left)
+           left = xi;
+       if(xi > right)
+           right = xi;
+    }
+
+    // Shift north/south until we're vertically aligned
+    // TODO can probably do this better by shifting straight north by 2
+    if(top > 0)
+        for(int i = 0; i < top; i++)
+            move_unit(u, NORTHWEST);
+    else if(top < 0)
+        for(int i = 0; i < -top; i++)
+            move_unit(u, SOUTHWEST);
+
+    // We want this quantity to be as close to 0 as possible. But shifting
+    // changes both left and right, so it changes by 2. So 1 is also okay.
+    int margin_diff = (b->width - 1 - right) - (left - 0);
+
+    // We'd divide by 2, but (-1) / 2 = 0, and we want it to be -1.
+    // So we do a (signed) shift instead.
+    int shift_dist = margin_diff >> 1;
+
+    for(int i = 1; i < u->num_cells; i++)
+        u->cells_x[i] += shift_dist;
 }

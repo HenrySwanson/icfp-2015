@@ -18,4 +18,7 @@ int can_be_placed(unit* u, board* b);
 /** Place the unit on the board. */
 void place(unit* u, board* b);
 
+/** Move the unit to its spawn position. */
+void spawn_unit(unit* u, board* b);
+
 #endif
