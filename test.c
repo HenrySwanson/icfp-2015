@@ -101,7 +101,7 @@ void test_rotation()
     u.cells_x = xs;
     u.cells_y = ys;
 
-    rotate_unit(&u, 0);
+    move_unit(&u, CWISE);
     for(int i = 0; i < u.num_cells; i++)
     {
         assert(u.cells_x[i] == new_xs[i]);

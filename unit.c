@@ -2,11 +2,21 @@
 
 #include <assert.h>
 
-void shift_unit(unit* u, dir_t dir)
+/** Destructively rotates the unit in the given direction. */
+void rotate_unit(unit* u, int ccw);
+
+void move_unit(unit* u, dir_t dir)
 {
-    shift_cell(&u->pivot_x, &u->pivot_y, dir);
-    for(int i = 0; i < u->num_cells; i++)
-        shift_cell(&u->cells_x[i], &u->cells_y[i], dir);
+    if(dir == CCWISE)
+        rotate_unit(u, 1);
+    else if(dir == CWISE)
+        rotate_unit(u, 0);
+    else
+    {
+        shift_cell(&u->pivot_x, &u->pivot_y, dir);
+        for(int i = 0; i < u->num_cells; i++)
+            shift_cell(&u->cells_x[i], &u->cells_y[i], dir);
+    }
 }
 
 // Rotating is complicated. We'll use a three-axis coordinate system.
@@ -58,26 +68,26 @@ void rotate_unit(unit* u, int ccw)
      }
 }
 
-int can_be_placed(const unit u, const board b)
+int can_be_placed(unit* u, board* b)
 {
-    for(int i = 0; i < u.num_cells; i++)
+    for(int i = 0; i < u->num_cells; i++)
     {
-        int xi = u.cells_x[i];
-        int yi = u.cells_y[i];
+        int xi = u->cells_x[i];
+        int yi = u->cells_y[i];
         if(!is_valid_cell(b, xi, yi) || get_cell(b, xi, yi))
             return 0;
     }
     return 1;
 }
 
-void place(const unit u, board* b)
+void place(unit* u, board* b)
 {
-    assert(can_be_placed(u, *b));
+    assert(can_be_placed(u, b));
 
-    for(int i = 0; i < u.num_cells; i++)
+    for(int i = 0; i < u->num_cells; i++)
     {
-        int xi = u.cells_x[i];
-        int yi = u.cells_y[i];
+        int xi = u->cells_x[i];
+        int yi = u->cells_y[i];
         set_cell(b, xi, yi, 1);
     }
 }

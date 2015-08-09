@@ -11,7 +11,7 @@ typedef struct {
 } board;
 
 /** An enum for directions we are allowed to move in. */
-typedef enum {EAST, WEST, SOUTHEAST, SOUTHWEST} dir_t;
+typedef enum {EAST, WEST, SOUTHEAST, SOUTHWEST, CWISE, CCWISE} dir_t;
 
 /** Creates a new board. */
 board* new_board(int width, int height);

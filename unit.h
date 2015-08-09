@@ -10,15 +10,12 @@ typedef struct {
 } unit;
 
 /** Destructively shifts the unit in the given direction. */
-void shift_unit(unit* u, dir_t dir);
-
-/** Destructively rotates the unti in the given direction. */
-void rotate_unit(unit* u, int ccw);
+void move_unit(unit* u, dir_t dir);
 
 /** Return true if the unit can be placed on the board. */
-int can_be_placed(const unit u, const board b);
+int can_be_placed(unit* u, board* b);
 
 /** Place the unit on the board. */
-void place(const unit u, board* b);
+void place(unit* u, board* b);
 
 #endif
