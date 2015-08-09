@@ -152,11 +152,21 @@ void test_rotation()
     }
 }
 
-void test_spawning_helper(unit* u, board* b)
+void test_spawning_helper(board* b, int* xs, int* ys, int num_cells)
 {
+    // Create a new unit from the given arrays
+    unit* u = new_unit(num_cells);
+    for(int j = 0; j < num_cells; j++)
+    {
+        u->cells_x[j] = xs[j];
+        u->cells_y[j] = ys[j];
+    }
+
+    // These are the test offsets we'll use
     int x_offsets [6] = { 0, 4, 5, -1, -3, 9 };
     int y_offsets [6] = { 0, 2, -3, 5, -10, 2 };
 
+    // We'll only move the clone around
     unit* clone = copy_unit(u);
 
     for(int i = 0; i < 6; i++)
@@ -166,6 +176,8 @@ void test_spawning_helper(unit* u, board* b)
             clone->cells_x[j] += x_offsets[i];
             clone->cells_y[j] += y_offsets[i];
         }
+        clone->pivot_x += x_offsets[i];
+        clone->pivot_y += y_offsets[i];
 
         spawn_unit(clone, b);
 
@@ -174,22 +186,26 @@ void test_spawning_helper(unit* u, board* b)
             assert(u->cells_x[j] == clone->cells_x[j]);
             assert(u->cells_y[j] == clone->cells_y[j]);
         }
-        assert(u->pivot_x = clone->pivot_x);
-        assert(u->pivot_y = clone->pivot_y);
+        assert(u->pivot_x == clone->pivot_x);
+        assert(u->pivot_y == clone->pivot_y);
     }
+
+    free_unit(clone);
+    free_unit(u);
 }
 
 void test_spawning()
 {
     board* b = new_board(5, 5);
 
-    unit* u = new_unit(1);
-    u->cells_x[0] = 2;
-    u->cells_y[0] = 0;
+    int xs_1 [1] = { 2 };
+    int ys_1 [1] = { 0 };
+    test_spawning_helper(b, xs_1, ys_1, 1);
 
-    test_spawning_helper(u, b);
+    int xs_2 [6] = { 2, 3, 1, 3, 2, 3 };
+    int ys_2 [6] = { 0, 0, 1, 1, 2, 2 };
+    test_spawning_helper(b, xs_2, ys_2, 6);
 
-    free_unit(u);
     free_board(b);
 }
 
@@ -197,6 +213,7 @@ int main()
 {
     test_shifts();
     test_clear_rows();
+    test_spawning();
 
     printf("All tests passed!\n");
 }

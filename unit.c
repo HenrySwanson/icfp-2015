@@ -124,23 +124,12 @@ void spawn_unit(unit* u, board* b)
 {
     assert(u->num_cells > 0);
 
-    // Find the y-coordinate of the topmost cell and the x-coordinates of the
-    // outermost cells.
-    int top, left, right;
-    top = u->cells_y[0];
-    left = right = u->cells_x[0];
+    // Find the y-coordinate of the topmost cell
+    int top = u->cells_y[0];
 
     for(int i = 1; i < u->num_cells; i++)
-    {
-       int xi = u->cells_x[i];
-       int yi = u->cells_y[i];
-       if(yi < top)
-           top = yi;
-       if(xi < left)
-           left = xi;
-       if(xi > right)
-           right = xi;
-    }
+       if(u->cells_y[i] < top)
+           top = u->cells_y[i];
 
     // Shift north/south until we're vertically aligned
     // TODO can probably do this better by shifting straight north by 2
@@ -151,6 +140,19 @@ void spawn_unit(unit* u, board* b)
         for(int i = 0; i < -top; i++)
             move_unit(u, SOUTHWEST);
 
+    // Now we try to center ourselves horizontally
+    int left, right;
+    left = right = u->cells_x[0];
+
+    for(int i = 1; i < u->num_cells; i++)
+    {
+       int xi = u->cells_x[i];
+       if(xi < left)
+           left = xi;
+       if(xi > right)
+           right = xi;
+    }
+
     // We want this quantity to be as close to 0 as possible. But shifting
     // changes both left and right, so it changes by 2. So 1 is also okay.
     int margin_diff = (b->width - 1 - right) - (left - 0);
@@ -159,7 +161,7 @@ void spawn_unit(unit* u, board* b)
     // So we do a (signed) shift instead.
     int shift_dist = margin_diff >> 1;
 
-    for(int i = 1; i < u->num_cells; i++)
+    for(int i = 0; i < u->num_cells; i++)
         u->cells_x[i] += shift_dist;
     u->pivot_x += shift_dist;
 }
