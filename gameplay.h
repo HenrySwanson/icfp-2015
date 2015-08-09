@@ -9,7 +9,7 @@ typedef struct {
     int width;
     int height;
     int source_length;
-    int** source_seeds;
+    int* source_seeds;
     int num_seeds;
 } input;
 
@@ -23,3 +23,6 @@ typedef struct {
 typedef struct {
     result* output;
 } output;
+
+output* play_game(input* input, int time_available, int mem_available,
+          int cores_available, char* wops[], int num_wops);

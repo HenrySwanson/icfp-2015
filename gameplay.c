@@ -1,3 +1,8 @@
+#include <stdlib.h>
+#include <assert.h>
+
+#include "gameplay.h"
+
 // Note, this expects the units to already be centered.
 int score_seq(board* b, unit* units, int num_units, dir_t* moves, int num_moves)
 {
@@ -37,4 +42,10 @@ int score_seq(board* b, unit* units, int num_units, dir_t* moves, int num_moves)
     // TODO power scoring
 
     return score;
+}
+
+output* play_game(input* input, int time_available, int mem_available,
+          int cores_available, char* wops[], int num_wops) {
+    // TODO nop for now
+    return NULL;
 }

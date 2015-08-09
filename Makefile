@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -g --std=c99
-LFLAGS = -g
+LFLAGS = -g -ljansson
 
 SRCS = board.c unit.c
 OBJS = $(patsubst %.c, %.o, $(SRCS))
@@ -16,7 +16,7 @@ test : $(OBJS) test.o
 	$(CC) $(LFLAGS) $^ -o $@
 	./test
 
-playicfp_2015 : $(OBJS) playicfp_2015.o
+playicfp_2015 : $(OBJS) playicfp_2015.o board.o unit.o gameplay.o
 	$(CC) $(LFLAGS) $^ -o $@
 
 %.o : %.cpp
