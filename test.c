@@ -156,44 +156,35 @@ void test_spawning_helper(board* b, int* xs, int* ys, int num_cells)
 {
     // Create a new unit from the given arrays
     unit* u = new_unit(num_cells);
-    for(int j = 0; j < num_cells; j++)
+    for(int i = 0; i < num_cells; i++)
     {
-        u->cells_x[j] = xs[j];
-        u->cells_y[j] = ys[j];
+        u->cells_x[i] = xs[i];
+        u->cells_y[i] = ys[i];
     }
 
     // These are the test offsets we'll use
     int  e_offsets [6] = { 0, 2, 6, 0, 7, 1 };
     int nw_offsets [6] = { 0, 4, 5, 1, 3, 9 };
-    int se_offsets [6] = { 0, 2, 3, 5, 8, 2 };
+    int sw_offsets [6] = { 0, 2, 3, 5, 8, 2 };
 
     // We'll only move the clone around
     unit* clone = copy_unit(u);
 
-    for(int i = 0; i < 6; i++)
+    for(int j = 0; j < 6; j++)
     {
-        for(int j = 0; j < u->num_cells; j++)
-        {
-            for(int k = 0; k < e_offsets[i]; k++)
-                move_unit(clone, EAST);
-            for(int k = 0; k < nw_offsets[i]; k++)
-                move_unit(clone, NORTHWEST);
-            for(int k = 0; k < sw_offsets[i]; k++)
-                move_unit(clone, SOUTHWEST);
-        }
-        for(int k = 0; k < e_offsets[i]; k++)
-            shift_cell(&clone->pivot_x, &clone->pivot_y, EAST);
-        for(int k = 0; k < nw_offsets[i]; k++)
-            shift_cell(&clone->pivot_x, &clone->pivot_y, NORTHWEST);
-        for(int k = 0; k < sw_offsets[i]; k++)
-            shift_cell(&clone->pivot_x, &clone->pivot_y, SOUTHWEST);
+        for(int i = 0; i < e_offsets[j]; i++)
+            move_unit(clone, EAST);
+        for(int i = 0; i < nw_offsets[j]; i++)
+            move_unit(clone, NORTHWEST);
+        for(int i = 0; i < sw_offsets[j]; i++)
+            move_unit(clone, SOUTHWEST);
 
         spawn_unit(clone, b);
 
-        for(int j = 0; j < u->num_cells; j++)
+        for(int i = 0; i < u->num_cells; i++)
         {
-            assert(u->cells_x[j] == clone->cells_x[j]);
-            assert(u->cells_y[j] == clone->cells_y[j]);
+            assert(u->cells_x[i] == clone->cells_x[i]);
+            assert(u->cells_y[i] == clone->cells_y[i]);
         }
         assert(u->pivot_x == clone->pivot_x);
         assert(u->pivot_y == clone->pivot_y);
