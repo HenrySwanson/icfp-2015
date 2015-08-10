@@ -15,7 +15,7 @@ typedef enum {EAST, WEST, SOUTHEAST, SOUTHWEST, NORTHWEST, NORTHEAST,
     CWISE, CCWISE} dir_t;
 
 /** Reverses the given direction. */
-inline dir_t opposite_dir(dir_t d)
+static inline dir_t opposite_dir(dir_t d)
 {
     return d ^ 1;
 }

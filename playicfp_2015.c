@@ -3,7 +3,6 @@
 #include <unistd.h>
 #include <jansson.h>
 
-#include "unit.h"
 #include "gameplay.h"
 
 void parse_unit(unit* unit_array[], json_t* json_unit, int index) {
